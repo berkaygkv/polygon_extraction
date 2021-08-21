@@ -34,6 +34,11 @@ def get_stores(latitude, longitude, driver):
     start = time.time()
     url = f"https://www.google.com/maps/search/{latitude}+{longitude}"
     driver.get(url)
+    time.sleep(1)
+    try:
+        driver.find_element_by_xpath("//button[@aria-label='Agree to the use of cookies and other data for the purposes described']").click()
+    except:
+        pass
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//span[@class="widget-pane-link"]')))
     print(f"Elapsed Time: {int(time.time() - start)} seconds")
     
