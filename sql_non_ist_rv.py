@@ -57,7 +57,7 @@ ind = total_store_counts
 stale_element_count = 0
 while True:
     try:
-        cursor.execute(f'SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 3 = {GROUP_ID}')
+        cursor.execute(f'SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 4 = {GROUP_ID}')
         row = cursor.fetchone()
         if not row:
             print('List is finished')
@@ -65,7 +65,7 @@ while True:
         name, lat, lon, city, town, checked, ID = row
         print('Row: ', row)
         addr = get_stores(lat, lon, driver)
-        cursor.execute(fr"insert into store_address values ('{name}','{lat}','{lon}','{city}','{town}', 1, '{ID}','{addr}')")
+        cursor.execute("insert into store_address values (?,?,?,?,?,?,?,?)",name, lat, lon, city,town, '1', ID, addr)
         cursor.execute(fr"UPDATE stores set Checked = 1 WHERE ID = {ID}")
         cnxn.commit()
     
