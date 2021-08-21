@@ -6,9 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 import os
 
 
+GROUP_ID = 0
 
 server = 'tcp:berkayserver.database.windows.net' 
 database = 'scraper_db' 
@@ -25,8 +27,8 @@ def init_webdriver():
     chrome_options.add_argument('--disable-gpu')
     prefs = {"profile.managed_default_content_settings.images": 2}
     chrome_options.add_experimental_option("prefs", prefs)
-    #chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
     return driver
 
 
@@ -52,16 +54,25 @@ cursor = cnxn.cursor()
 cursor.execute('SELECT COUNT(*) FROM stores')
 total_store_counts = cursor.fetchall()[0][0]
 ind = total_store_counts
-latest_index = 30000
-while ind > latest_index:
-    cursor.execute(f'SELECT * FROM stores WHERE Store_id = {ind-1}')
-    row = cursor.fetchall()[0]
-    st_id, name, lat, lon, city, town = row
-    addr = get_stores(lat, lon, driver)
-    cursor.execute(f"insert into store_address values ('{name}','{lat}','{lon}','{city}','{town}','{addr}')")
-    cnxn.commit()
-    print('Index: ', ind)
-    ind -= 1
+stale_element_count = 0
+while True:
+    try:
+        cursor.execute('SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 3 = {GROUP_ID}')
+        row = cursor.fetchone()
+        if not row:
+            print('List is finished')
+            break
+        name, lat, lon, city, town, checked, ID = row
+        print('Row: ', row)
+        addr = get_stores(lat, lon, driver)
+        cursor.execute(fr"insert into store_address values ('{name}','{lat}','{lon}','{city}','{town}', 1, '{ID}','{addr}')")
+        cursor.execute(fr"UPDATE stores set Checked = 1 WHERE ID = {ID}")
+        cnxn.commit()
+    
+    except StaleElementReferenceException:
+        stale_element_count += 1
+        print('Stale element count: ', stale_element_count)
+        
 
 
 
