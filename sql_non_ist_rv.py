@@ -10,7 +10,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 import os
 
 
-GROUP_ID = 0
+GROUP_ID = '0'
 
 server = 'tcp:berkayserver.database.windows.net' 
 database = 'scraper_db' 
@@ -27,8 +27,8 @@ def init_webdriver():
     chrome_options.add_argument('--disable-gpu')
     prefs = {"profile.managed_default_content_settings.images": 2}
     chrome_options.add_experimental_option("prefs", prefs)
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    #chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    driver = webdriver.Chrome(options=chrome_options)
     return driver
 
 
@@ -57,7 +57,7 @@ ind = total_store_counts
 stale_element_count = 0
 while True:
     try:
-        cursor.execute('SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 3 = {GROUP_ID}')
+        cursor.execute(f'SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 3 = {GROUP_ID}')
         row = cursor.fetchone()
         if not row:
             print('List is finished')
