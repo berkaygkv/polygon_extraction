@@ -36,7 +36,7 @@ def get_stores(latitude, longitude, driver):
     start = time.time()
     url = f"https://www.google.com/maps/search/{latitude}+{longitude}"
     driver.get(url)
-    time.sleep(1)
+    time.sleep(0.1)
     try:
         driver.find_element_by_xpath("//button[@aria-label='Agree to the use of cookies and other data for the purposes described']").click()
     except:
