@@ -3,7 +3,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-GCP_PROJECT_ID = os.getenv('GCP_PROJECT_ID')
-SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
-STORAGE_BUCKET_NAME = os.getenv('STORAGE_BUCKET_NAME')
-print(GCP_PROJECT_ID)
+GROUP_NUMBER = os.getenv('GROUP_NUMBER')
+GROUP_ID = os.getenv('GROUP_ID')
+server = os.getenv('SERVER')
+database = os.getenv('DATABASE') 
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
+
+print(server)

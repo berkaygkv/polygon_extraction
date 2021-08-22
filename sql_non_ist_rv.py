@@ -16,7 +16,6 @@ database = os.getenv('DATABASE')
 username = os.getenv('USERNAME')
 password = os.getenv('PASSWORD')
 
-
 def init_webdriver():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -49,9 +48,6 @@ driver = init_webdriver()
 cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 
-cursor.execute('SELECT COUNT(*) FROM stores')
-total_store_counts = cursor.fetchall()[0][0]
-ind = total_store_counts
 stale_element_count = 0
 while True:
     try:
@@ -61,7 +57,7 @@ while True:
             print('List is finished')
             break
         name, lat, lon, city, town, checked, ID = row
-        print('Row: ', row)
+        print('Row: ', row,'Stale element count: ', stale_element_count)
         addr = get_stores(lat, lon, driver)
         cursor.execute("insert into store_address values (?,?,?,?,?,?,?,?)",name, lat, lon, city,town, '1', ID, addr)
         cursor.execute(fr"UPDATE stores set Checked = 1 WHERE ID = {ID}")
@@ -69,12 +65,6 @@ while True:
     
     except StaleElementReferenceException:
         stale_element_count += 1
-        print('Stale element count: ', stale_element_count)
+
         
-
-
-
-#data = pd.read_sql("SELECT TOP(1000) * FROM dbo.store_address", cnxn)
-#print(data.head())
-# Do the insert
 
