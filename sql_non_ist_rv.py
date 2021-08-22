@@ -9,13 +9,12 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
 import os
 
-
-GROUP_ID = '0'
-
-server = 'tcp:berkayserver.database.windows.net' 
-database = 'scraper_db' 
-username = 'scr_v' 
-password = 'Vestel54'
+GROUP_NUMBER = os.getenv('GROUP_NUMBER')
+GROUP_ID = os.getenv('GROUP_ID')
+server = os.getenv('SERVER')
+database = os.getenv('DATABASE') 
+username = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
 
 def init_webdriver():
@@ -27,7 +26,6 @@ def init_webdriver():
     chrome_options.add_argument('--disable-gpu')
     prefs = {"profile.managed_default_content_settings.images": 2}
     chrome_options.add_experimental_option("prefs", prefs)
-    #chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     driver = webdriver.Chrome(options=chrome_options)
     return driver
 
@@ -41,7 +39,7 @@ def get_stores(latitude, longitude, driver):
         driver.find_element_by_xpath("//button[@aria-label='Agree to the use of cookies and other data for the purposes described']").click()
     except:
         pass
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//span[@class="widget-pane-link"]')))
+    WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '//span[@class="widget-pane-link"]')))
     print(f"Elapsed Time: {int(time.time() - start)} seconds")
     
     return driver.find_element_by_xpath('//span[@class="widget-pane-link"]').text
@@ -57,7 +55,7 @@ ind = total_store_counts
 stale_element_count = 0
 while True:
     try:
-        cursor.execute(f'SELECT * FROM stores WHERE [Checked] IS NULL AND ID % 4 = {GROUP_ID}')
+        cursor.execute(f'SELECT * FROM stores WHERE [Checked] IS NULL AND ID % {GROUP_NUMBER} = {GROUP_ID}')
         row = cursor.fetchone()
         if not row:
             print('List is finished')
