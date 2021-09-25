@@ -57,21 +57,14 @@ def get_stores(latitude, longitude, driver):
     driver.get(url)
     
     # Let the script stop for 0.1 seconds just to be safe for interacting with the page
-    time.sleep(0.1)
+    #time.sleep(0.1)
+    driver.implicitly_wait(6) 
     print(f"Load Time: {int(time.time() - start)} seconds")
-
-
-    # Click Cookie Consent dialog box if exists or else pass this section
-    try:
-        cookie_consent_xpath = "//button[@aria-label='Agree to the use of cookies and other data for the purposes described']"
-        driver.find_element_by_xpath(cookie_consent_xpath).click()
-    except:
-        pass
 
     # Webdriver expression to wait precisely until the Address field becomes visible
     address_text_xpath = '//span[@class="widget-pane-link"]'
-    WebDriverWait(driver, 20).until(EC.visibility_of_element_located(
-        (By.XPATH, address_text_xpath)))
+    #WebDriverWait(driver, 20).until(EC.visibility_of_element_located(
+    #    (By.XPATH, address_text_xpath)))
 
     # Gather the web element object with the corresponding information and get the text value of the object
     address_text = driver.find_element_by_xpath(address_text_xpath).text
@@ -101,6 +94,15 @@ def main(cursor=cursor):
     - Changes 'Checked' column as '1' of the corresponding store in the source table 
 
     '''
+    
+    
+    driver.get('https://www.google.com/maps/search/homegoods+stores+in+fatih+istanbul')
+    time.sleep(0.5)
+    try:
+        driver.find_element_by_xpath("//*[contains(text(),'I agree')]").click()
+        time.sleep(5)
+    except:
+        print('I agree click error')
     
     # Number of Stale Element errors occured 
     stale_element_count = 0
