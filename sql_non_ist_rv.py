@@ -55,9 +55,11 @@ def get_stores(latitude, longitude, driver):
     # Creating the url string and directing the driver to the gmaps page 
     url = f"https://www.google.com/maps/search/{latitude}+{longitude}"
     driver.get(url)
-
+    
     # Let the script stop for 0.1 seconds just to be safe for interacting with the page
     time.sleep(0.1)
+    print(f"Load Time: {int(time.time() - start)} seconds")
+
 
     # Click Cookie Consent dialog box if exists or else pass this section
     try:
@@ -126,7 +128,7 @@ def main(cursor=cursor):
             name, href ,lat, lon, ID, checked = row
             
             # Prints the values
-            print('Row: ', row, 'Stale element count: ', stale_element_count, 'Timeout count: ', timeout_count)
+            print('Row: ', name, 'Stale element count: ', stale_element_count, 'Timeout count: ', timeout_count)
 
             # Gets the address of the store
             addr = get_stores(lat, lon, driver)
