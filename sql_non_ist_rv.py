@@ -61,7 +61,7 @@ def get_stores(latitude, longitude, driver):
     load_time = int(time.time() - start)
 
     # Webdriver expression to wait precisely until the Address field becomes visible
-    address_text_xpath = '//span[@class="widget-pane-link"]'
+    address_text_xpath = '//div[@jsan="7.QSFF4-text,7.gm2-body-2"]'
     WebDriverWait(driver, 20).until(EC.text_to_be_present_in_element(
         (By.XPATH, address_text_xpath), ''))
 
