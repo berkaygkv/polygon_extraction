@@ -58,7 +58,6 @@ def get_stores(latitude, longitude, driver):
     
     # Let the script stop for 0.1 seconds just to be safe for interacting with the page
     #time.sleep(0.1)
-    #driver.implicitly_wait(6) 
     load_time = int(time.time() - start)
 
     # Webdriver expression to wait precisely until the Address field becomes visible
@@ -70,7 +69,7 @@ def get_stores(latitude, longitude, driver):
     address_text = driver.find_element_by_xpath(address_text_xpath).text
 
     # Subtract the current time from the starting time value to obtain total seconds passed
-    print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds")
+    print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds --- ADR: {address_text}")
 
     return address_text
 
