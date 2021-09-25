@@ -64,7 +64,7 @@ def get_stores(latitude, longitude, driver):
     address_text_xpath = '//div[@data-tooltip="Copy address"]//*[string-length(text()) > 2]'
     WebDriverWait(driver, 6).until(EC.text_to_be_present_in_element((By.XPATH, address_text_xpath),''))
     
-    #time.sleep(3)
+    time.sleep(9)
     address_text = driver.find_element_by_xpath('//span[@class="widget-pane-link"]').text
     
     # Gather the web element object with the corresponding information and get the text value of the object
