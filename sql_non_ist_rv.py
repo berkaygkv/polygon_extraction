@@ -61,10 +61,8 @@ def get_stores(latitude, longitude, driver):
     load_time = int(time.time() - start)
 
     # Webdriver expression to wait precisely until the Address field becomes visible
-    address_text_xpath = '//span[@class="widget-pane-link"]'
-    WebDriverWait(driver, 20).until(EC.visibility_of_element_located(
-        (By.XPATH, address_text_xpath)))
-
+    address_text_xpath = '//div[@data-tooltip="Copy address"]//*[string-length(text()) > 1]'
+    WebDriverWait(driver, 6).until(EC.text_to_be_present_in_element((By.XPATH, address_text_xpath),' '))
     # Gather the web element object with the corresponding information and get the text value of the object
     address_text = driver.find_element_by_xpath(address_text_xpath).text
     
