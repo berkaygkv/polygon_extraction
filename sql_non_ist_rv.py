@@ -123,7 +123,7 @@ def main(cursor=cursor):
                 break
 
             # Unpacks row into variables
-            name, href ,lat, lon, ID,  = row
+            name, href ,lat, lon, ID, checked = row
             
             # Prints the values
             print('Row: ', row, 'Stale element count: ', stale_element_count, 'Timeout count: ', timeout_count)
