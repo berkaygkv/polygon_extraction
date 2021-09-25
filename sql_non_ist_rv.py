@@ -69,7 +69,7 @@ def get_stores(latitude, longitude, driver):
     address_text = driver.find_element_by_xpath(address_text_xpath).text
 
     # Subtract the current time from the starting time value to obtain total seconds passed
-    print(driver.get_screenshot_as_base64())
+    print(driver.page_source)
     print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds --- ADR: {address_text}")
 
     return address_text
@@ -152,10 +152,7 @@ def main(cursor=cursor):
         # Keeps track of Timeout errors
         except  TimeoutException:
             timeout_count += 1
-            with open('agree error.html', 'w', encoding='UTF-8') as wr:
-                wr.write(driver.page_source)
-                print(driver.current_url)
-    
+
 
 
 # As a best practice use 'if __name__' expression before calling the main function
