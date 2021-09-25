@@ -69,6 +69,7 @@ def get_stores(latitude, longitude, driver):
     address_text = driver.find_element_by_xpath(address_text_xpath).text
 
     # Subtract the current time from the starting time value to obtain total seconds passed
+    print(driver.get_screenshot_as_base64())
     print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds --- ADR: {address_text}")
 
     return address_text
@@ -96,13 +97,13 @@ def main(cursor=cursor):
     
     
     driver.get('https://www.google.com/maps/search/homegoods+stores+in+fatih+istanbul')
-    time.sleep(0.5)
+    time.sleep(5)
     try:
         driver.find_element_by_xpath("//*[contains(text(),'I agree')]").click()
         time.sleep(5)
     except:
         print('I agree click error')
-    
+
     # Number of Stale Element errors occured 
     stale_element_count = 0
 
@@ -151,8 +152,13 @@ def main(cursor=cursor):
         # Keeps track of Timeout errors
         except  TimeoutException:
             timeout_count += 1
+            with open('agree error.html', 'w', encoding='UTF-8') as wr:
+                wr.write(driver.page_source)
+                print(driver.current_url)
+    
 
 
 # As a best practice use 'if __name__' expression before calling the main function
 if __name__ == '__main__':
     main()
+
