@@ -70,6 +70,7 @@ def get_stores(latitude, longitude, driver):
     #address_text = driver.find_element_by_xpath(address_text_xpath).text
 
     # Subtract the current time from the starting time value to obtain total seconds passed
+    time.sleep(2)
     print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds --- ADR: {address_text}")
 
     return address_text
@@ -144,7 +145,7 @@ def main(cursor=cursor):
             # Commit the changes made in the SQL Server
             cnxn.commit()
             
-            time.sleep(2)
+            
 
 
         # Keeps track of Stale Element errors
