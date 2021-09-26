@@ -143,6 +143,8 @@ def main(cursor=cursor):
 
             # Commit the changes made in the SQL Server
             cnxn.commit()
+            
+            time.sleep(2)
 
 
         # Keeps track of Stale Element errors
