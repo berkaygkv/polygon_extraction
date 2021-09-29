@@ -153,7 +153,9 @@ def main(cursor=cursor):
         # Keeps track of Timeout errors
         except  TimeoutException:
             timeout_count += 1
-
+            if timeout_count > 3:
+                cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID}")
+                cnxn.commit()
 
 
 # As a best practice use 'if __name__' expression before calling the main function
