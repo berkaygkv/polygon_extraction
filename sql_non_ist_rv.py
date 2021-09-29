@@ -36,7 +36,6 @@ def init_webdriver():
     # Below options allow to initiate driver without starting a browser screen (necessary for Heroku)
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    chrome_options.add_argument("window-size=5760,3240")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument('--disable-gpu')
@@ -70,7 +69,6 @@ def get_stores(latitude, longitude, driver):
     #address_text = driver.find_element_by_xpath(address_text_xpath).text
 
     # Subtract the current time from the starting time value to obtain total seconds passed
-    time.sleep(2)
     print(f"Load time: {load_time} --- Elapsed Time: {int(time.time() - start)} seconds --- ADR: {address_text}")
 
     return address_text
