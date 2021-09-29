@@ -77,7 +77,7 @@ def get_stores(latitude, longitude, driver):
 driver = init_webdriver()
 
 # Connect to the SQL Database with the given credentials
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database +';UID=' + username + ';PWD=' + password)
+cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database +';UID=' + username + ';PWD=' + password, autocommit=True)
 
 # Create a cursor object to interact with the SQL server
 cursor = cnxn.cursor()
