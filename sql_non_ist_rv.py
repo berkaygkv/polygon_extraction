@@ -135,7 +135,7 @@ def main(cursor=cursor):
             addr = get_stores(lat, lon, driver)
 
             # Inserts the row with the address value into the store_address table in the database
-            cursor.execute("insert into store_address values (?,?,?,?,?,?,?) nolock", name, href, lat, lon, ID, '1',addr)
+            cursor.execute("insert into store_address values (?,?,?,?,?,?,?)", name, href, lat, lon, ID, '1',addr)
 
             # Updates the corresponding store record in the source table to emhasize that the store has been scraped now
             cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID}")
