@@ -115,7 +115,7 @@ def main(cursor=cursor):
         try:
             # SELECTs all stores whose 'Checked' column is NULL and whose 'GROUP_ID' value equals to the mod division of ID number to GROUP_NUMBER value
             # so that when the script is distributed into 5 platforms, these scripts will not step in each other's chunk of stores  
-            cursor.execute(f'SELECT * FROM hgoods_raw WHERE [checked] IS NULL AND ID % {GROUP_NUMBER} = {GROUP_ID}')
+            cursor.execute(f'SELECT * FROM hgoods_raw WHERE [checked] IS NULL AND ID % {GROUP_NUMBER} = {GROUP_ID} nolock')
 
             # Gets one store in the queried list of stores    
             row = cursor.fetchone()
@@ -135,10 +135,10 @@ def main(cursor=cursor):
             addr = get_stores(lat, lon, driver)
 
             # Inserts the row with the address value into the store_address table in the database
-            cursor.execute("insert into store_address values (?,?,?,?,?,?,?)", name, href, lat, lon, ID, '1',addr)
+            cursor.execute("insert into store_address values (?,?,?,?,?,?,?) nolock", name, href, lat, lon, ID, '1',addr)
 
             # Updates the corresponding store record in the source table to emhasize that the store has been scraped now
-            cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID}")
+            cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID} nolock")
 
             # Commit the changes made in the SQL Server
             cnxn.commit()
@@ -154,7 +154,7 @@ def main(cursor=cursor):
         except  TimeoutException:
             timeout_count += 1
             if timeout_count % 3 == 0:
-                cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID}")
+                cursor.execute(fr"UPDATE hgoods_raw set checked = 1 WHERE ID = {ID} nolock")
                 cnxn.commit()
 
 
