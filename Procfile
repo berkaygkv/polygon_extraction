@@ -1,1 +1,1 @@
-worker: python sql_non_ist_rv.py
+worker: python polygon_extractor.py
